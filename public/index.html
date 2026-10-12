@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Desconfia — quiz de phishing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="stage">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">D</span>
+        <div>
+          <strong>Desconfia</strong>
+          <small>Phishing e engenharia social</small>
+        </div>
+      </div>
+      <button id="board-toggle" class="ghost" type="button">Placar</button>
+    </header>
+    <div class="layout">
+      <main id="screen"></main>
+      <aside id="board"></aside>
+    </div>
+  </div>
+  <div id="confetti" aria-hidden="true"></div>
+  <script src="avatar.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
