@@ -1,20 +1,23 @@
 const Avatar = (() => {
   let seq = 0;
   const skins = ["#f8d7b8", "#efc09a", "#d9a06c", "#c4844a", "#8d5a34", "#5c3a24"];
-  const hairs = ["#2a211c", "#6a3e2a", "#d25a2b", "#e2b15c", "#3e4658", "#c43b68"];
+  const hairs = ["#2a211c", "#6a3e2a", "#d25a2b", "#e2b15c", "#3e4658", "#c43b68", "#f4f1ea", "#3c8f62", "#3a6fd8", "#7a4bb8"];
   const irises = ["#4a3428", "#2c6bed", "#1f8a4c", "#7a4a1e", "#6d4ca8", "#222"];
   const counts = {
     skin: skins.length,
     eyes: 6,
     eyeColor: irises.length,
-    hair: 8,
+    hair: 16,
     hairColor: hairs.length,
-    hat: 7,
+    hat: 11,
+    brows: 5,
+    facial: 4,
+    ears: 4,
     patch: 3,
     glasses: 4,
     mouth: 5,
-    frame: 6,
-    extra: 4,
+    frame: 8,
+    extra: 6,
   };
 
   function pick(value, size) {
@@ -47,31 +50,52 @@ const Avatar = (() => {
   }
 
   function hairBack(style, color) {
-    if (style === 3) {
+    if (style === 3 || style === 11) {
       return `<path d="M48 118 C44 70 70 48 100 48 C130 48 156 70 152 118 L146 176 C132 160 120 168 100 168 C80 168 68 160 54 176 Z" fill="${color}"/>`;
     }
-    if (style === 4) {
-      return `<circle cx="100" cy="104" r="78" fill="${color}"/>`;
+    if (style === 4) return `<circle cx="100" cy="104" r="78" fill="${color}"/>`;
+    if (style === 6) return `<circle cx="138" cy="78" r="22" fill="${color}"/><circle cx="150" cy="66" r="12" fill="${color}"/>`;
+    if (style === 8) return `<path d="M52 108 C54 64 146 64 148 108 C140 150 122 162 100 162 C78 162 60 150 52 108 Z" fill="${color}"/>`;
+    if (style === 9) {
+      return `<path d="M62 108 H78 V188 Q70 196 62 188 Z" fill="${color}"/><path d="M122 108 H138 V188 Q130 196 122 188 Z" fill="${color}"/><path d="M66 128 H74 M66 148 H74 M66 168 H74 M126 128 H134 M126 148 H134 M126 168 H134" stroke="#000" stroke-opacity=".18" stroke-width="2"/>`;
     }
-    if (style === 6) {
-      return `<circle cx="138" cy="78" r="22" fill="${color}"/><circle cx="150" cy="66" r="12" fill="${color}"/>`;
-    }
+    if (style === 10) return `<ellipse cx="150" cy="118" rx="22" ry="34" fill="${color}"/><circle cx="118" cy="78" r="16" fill="${color}"/>`;
+    if (style === 13) return `<circle cx="42" cy="118" r="18" fill="${color}"/><circle cx="158" cy="118" r="18" fill="${color}"/>`;
+    if (style === 15) return `<path d="M58 120 C52 70 78 52 100 60 C122 52 148 70 142 120 L136 186 C120 170 108 176 100 176 C92 176 80 170 64 186 Z" fill="${color}"/>`;
     return "";
   }
 
   function hairFront(style, color) {
-    if (style === 1) {
-      return `<path d="M48 112 C50 62 150 62 152 112 C132 96 112 108 100 92 C84 110 64 98 48 112 Z" fill="${color}"/>`;
-    }
-    if (style === 2) {
-      return `<path d="M46 108 C58 52 150 58 156 104 C128 78 108 96 86 74 C70 96 54 86 46 108 Z" fill="${color}"/>`;
-    }
-    if (style === 5) {
-      return `<path d="M50 116 C54 64 146 64 150 116 C136 98 128 112 116 90 C108 112 96 100 86 116 C74 98 62 110 50 116 Z" fill="${color}"/>`;
-    }
-    if (style === 7) {
-      return `<path d="M54 108 L70 48 L84 100 L100 36 L116 100 L132 46 L148 108 C132 90 114 100 100 86 C84 102 68 90 54 108 Z" fill="${color}"/>`;
-    }
+    if (style === 1) return `<path d="M48 112 C50 62 150 62 152 112 C132 96 112 108 100 92 C84 110 64 98 48 112 Z" fill="${color}"/>`;
+    if (style === 2) return `<path d="M46 108 C58 52 150 58 156 104 C128 78 108 96 86 74 C70 96 54 86 46 108 Z" fill="${color}"/>`;
+    if (style === 5 || style === 8) return `<path d="M50 116 C54 64 146 64 150 116 C136 98 128 112 116 90 C108 112 96 100 86 116 C74 98 62 110 50 116 Z" fill="${color}"/>`;
+    if (style === 7) return `<path d="M54 108 L70 48 L84 100 L100 36 L116 100 L132 46 L148 108 C132 90 114 100 100 86 C84 102 68 90 54 108 Z" fill="${color}"/>`;
+    if (style === 11) return `<path d="M48 120 C60 58 140 58 152 120 C138 96 124 118 112 88 C100 116 86 96 70 120 C60 100 52 112 48 120 Z" fill="${color}"/>`;
+    if (style === 12) return `<path d="M88 112 C90 40 110 40 112 112 C108 70 92 70 88 112 Z" fill="${color}"/><path d="M78 100 H122" stroke="${color}" stroke-width="8" stroke-linecap="round"/>`;
+    if (style === 14) return `<path d="M56 108 C70 58 150 70 146 104 C130 88 110 98 96 78 C80 100 64 90 56 108 Z" fill="${color}"/>`;
+    if (style === 15) return `<path d="M54 112 C70 58 96 78 100 96 C104 78 130 58 146 112 C130 92 112 104 100 88 C88 104 70 92 54 112 Z" fill="${color}"/>`;
+    return "";
+  }
+
+  function brows(style) {
+    if (style === 1) return `<path d="M60 96 Q76 88 92 98 M108 98 Q124 88 140 96" fill="none" stroke="#3a2a22" stroke-width="3" stroke-linecap="round"/>`;
+    if (style === 2) return `<path d="M58 98 Q76 86 94 100 M106 100 Q124 86 142 98" fill="none" stroke="#3a2a22" stroke-width="5" stroke-linecap="round"/>`;
+    if (style === 3) return `<path d="M58 92 L94 104 M142 92 L106 104" fill="none" stroke="#3a2a22" stroke-width="3.4" stroke-linecap="round"/>`;
+    if (style === 4) return `<path d="M60 90 Q76 78 92 92 M108 92 Q124 78 140 90" fill="none" stroke="#3a2a22" stroke-width="3" stroke-linecap="round"/>`;
+    return "";
+  }
+
+  function facial(style, color) {
+    if (style === 1) return `<path d="M78 150 Q100 160 122 150 Q100 156 78 150 Z" fill="#3a2a22"/>`;
+    if (style === 2) return `<path d="M62 132 Q70 168 100 176 Q130 168 138 132 Q120 150 100 154 Q80 150 62 132 Z" fill="${color}" opacity=".9"/>`;
+    if (style === 3) return `<path d="M90 150 Q100 176 110 150 Q100 166 90 150 Z" fill="#3a2a22"/>`;
+    return "";
+  }
+
+  function earrings(style) {
+    if (style === 1) return `<circle cx="40" cy="126" r="7" fill="none" stroke="#e2b22a" stroke-width="3"/><circle cx="160" cy="126" r="7" fill="none" stroke="#e2b22a" stroke-width="3"/>`;
+    if (style === 2) return `<circle cx="40" cy="124" r="4" fill="#f0c84b"/><circle cx="160" cy="124" r="4" fill="#f0c84b"/>`;
+    if (style === 3) return `<path d="M30 118 L42 132 L54 118 Z" fill="#e23b6a"/><path d="M146 118 L158 132 L170 118 Z" fill="#e23b6a"/>`;
     return "";
   }
 
@@ -93,6 +117,18 @@ const Avatar = (() => {
     }
     if (style === 6) {
       return `<rect x="70" y="58" width="60" height="36" fill="#222"/><rect x="62" y="90" width="76" height="10" fill="#222"/><rect x="96" y="34" width="8" height="28" fill="#222"/><circle cx="100" cy="30" r="8" fill="#ef4b4b"/>`;
+    }
+    if (style === 7) {
+      return `<path d="M48 96 L70 48 L86 92 Z" fill="#f2b6cf"/><path d="M152 96 L130 48 L114 92 Z" fill="#f2b6cf"/><ellipse cx="70" cy="94" rx="16" ry="8" fill="#e889a8"/><ellipse cx="130" cy="94" rx="16" ry="8" fill="#e889a8"/>`;
+    }
+    if (style === 8) {
+      return `<path d="M70 78 Q100 48 130 78 Q100 66 70 78 Z" fill="#e23b6a"/><circle cx="100" cy="74" r="8" fill="#ffd1e1"/>`;
+    }
+    if (style === 9) {
+      return `<circle cx="128" cy="70" r="14" fill="#ff5a7a"/><circle cx="118" cy="60" r="8" fill="#ff8aa0"/><circle cx="140" cy="62" r="8" fill="#ff8aa0"/><circle cx="128" cy="70" r="4" fill="#ffe08a"/>`;
+    }
+    if (style === 10) {
+      return `<ellipse cx="100" cy="86" rx="46" ry="12" fill="#2a9d8f"/><path d="M58 86 Q100 48 142 86" fill="#21867a"/>`;
     }
     return "";
   }
@@ -130,6 +166,12 @@ const Avatar = (() => {
     if (style === 3) {
       return `<path d="M118 128 L132 148" stroke="#b96a62" stroke-width="2.4" stroke-linecap="round"/>`;
     }
+    if (style === 4) {
+      return `<rect x="112" y="96" width="22" height="10" rx="3" fill="#f4d2b0" transform="rotate(28 123 101)"/><rect x="118" y="98" width="10" height="6" fill="#e7b89a" transform="rotate(28 123 101)"/>`;
+    }
+    if (style === 5) {
+      return `<path d="M58 128 L70 140 L62 146 Z" fill="#ff8fab"/><path d="M142 128 L130 140 L138 146 Z" fill="#ff8fab"/>`;
+    }
     return "";
   }
 
@@ -149,6 +191,12 @@ const Avatar = (() => {
     if (style === 5) {
       return `<circle cx="100" cy="118" r="84" fill="none" stroke="url(#${id}fire)" stroke-width="7"/>`;
     }
+    if (style === 6) {
+      return `<circle cx="100" cy="118" r="84" fill="none" stroke="url(#${id}rainbow)" stroke-width="7"/>`;
+    }
+    if (style === 7) {
+      return `<g fill="#ff6b93">${[[36, 70], [164, 70], [28, 150], [172, 150]].map(([x, y]) => `<path d="M${x} ${y + 4} C${x - 8} ${y - 8} ${x + 8} ${y - 8} ${x} ${y + 4} C${x - 8} ${y - 8} ${x + 8} ${y - 8} ${x} ${y + 4}"/>`).join("")}</g>`;
+    }
     return "";
   }
 
@@ -160,6 +208,9 @@ const Avatar = (() => {
       hair: pick(config && config.hair, counts.hair),
       hairColor: pick(config && config.hairColor, counts.hairColor),
       hat: pick(config && config.hat, counts.hat),
+      brows: pick(config && config.brows, counts.brows),
+      facial: pick(config && config.facial, counts.facial),
+      ears: pick(config && config.ears, counts.ears),
       patch: pick(config && config.patch, counts.patch),
       glasses: pick(config && config.glasses, counts.glasses),
       mouth: pick(config && config.mouth, counts.mouth),
@@ -177,6 +228,9 @@ const Avatar = (() => {
         <linearGradient id="${id}fire" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#ff5a36"/><stop offset="1" stop-color="#ffd15a"/>
         </linearGradient>
+        <linearGradient id="${id}rainbow" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ff5a7a"/><stop offset=".5" stop-color="#ffd45a"/><stop offset="1" stop-color="#3ee0ff"/>
+        </linearGradient>
       </defs>
       <circle cx="100" cy="118" r="90" fill="#efe7ff"/>
       ${frame(style.frame, id)}
@@ -185,10 +239,13 @@ const Avatar = (() => {
         <circle cx="100" cy="118" r="58" fill="${skins[style.skin]}"/>
         ${extra(style.extra)}
         ${mouth(style.mouth)}
+        ${facial(style.facial, hairs[style.hairColor])}
+        ${brows(style.brows)}
         ${eye(76, 114, style.eyes, color, leftShut)}
         ${eye(124, 114, style.eyes, color, rightShut)}
         ${hairFront(style.hair, hairs[style.hairColor])}
       </g>
+      ${earrings(style.ears)}
       ${patch(style.patch)}
       ${glasses(style.glasses)}
       ${hat(style.hat)}

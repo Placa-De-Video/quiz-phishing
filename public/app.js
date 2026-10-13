@@ -7,14 +7,17 @@ const labels = {
   skin: ["Pele clara", "Pele rosada", "Pele dourada", "Pele mel", "Pele marrom", "Pele escura"],
   eyes: ["Redondos", "Felizes", "Grandes", "Piscando", "Sonolentos", "Estrela"],
   eyeColor: ["Castanho", "Azul", "Verde", "Mel", "Roxo", "Preto"],
-  hair: ["Careca", "Curto", "De lado", "Comprido", "Afro", "Franja", "Coque", "Espetado"],
-  hairColor: ["Preto", "Castanho", "Ruivo", "Loiro", "Azulado", "Rosa"],
-  hat: ["Sem chapéu", "Boné", "Coroa", "Touca", "Chapéu de bruxo", "Bandana", "Cartola"],
+  hair: ["Careca", "Curto", "De lado", "Comprido", "Afro", "Franja", "Coque", "Espetado", "Chanel", "Tranças", "Rabo", "Ondulado", "Moicano", "Maria-chiquinha", "Pixie", "Repartido"],
+  hairColor: ["Preto", "Castanho", "Ruivo", "Loiro", "Azulado", "Rosa", "Branco", "Verde", "Azul", "Roxo"],
+  hat: ["Sem chapéu", "Boné", "Coroa", "Touca", "Chapéu de bruxo", "Bandana", "Cartola", "Orelhas de gato", "Laço", "Flor", "Boina"],
+  brows: ["Sem sobrancelha", "Suave", "Grossa", "Brava", "Surpresa"],
+  facial: ["Sem barba", "Bigode", "Barba", "Cavanhaque"],
+  ears: ["Sem brinco", "Argola", "Ponto", "Laço na orelha"],
   patch: ["Sem tapa-olho", "Tapa-olho esquerdo", "Tapa-olho direito"],
   glasses: ["Sem óculos", "Redondo", "Quadrado", "Escuro"],
   mouth: ["Sorriso", "Aberto", "Surpreso", "De lado", "Sério"],
-  frame: ["Sem moldura", "Ouro", "Neon", "Tracejada", "Estrelas", "Fogo"],
-  extra: ["Sem extra", "Bochecha", "Sardas", "Cicatriz"],
+  frame: ["Sem moldura", "Ouro", "Neon", "Tracejada", "Estrelas", "Fogo", "Arco-íris", "Corações"],
+  extra: ["Sem extra", "Bochecha", "Sardas", "Cicatriz", "Curativo", "Coração"],
 };
 const levelName = { baixo: "Baixo", medio: "Médio", dificil: "Difícil", impossivel: "Impossível" };
 const statusName = { lobby: "na sala", playing: "jogando", done: "terminou" };
@@ -115,6 +118,11 @@ async function poll() {
     const id = (state.you && state.you.id) || saved || "";
     const response = await fetch(`/api/state${id ? `?id=${encodeURIComponent(id)}` : ""}`);
     const data = await response.json();
+    if (data.turmas && data.turmas.length && !state.turmas.length && state.phase === "profile") {
+      rememberDraft();
+      state.turmas = data.turmas;
+      render();
+    }
     applyBoard(data);
     if (!restored && saved && data.resume && data.you) {
       restored = true;
@@ -159,6 +167,7 @@ function profileHtml() {
     }).join("");
     return `<div><h2>${title(key)}</h2><div class="choices">${choices}</div></div>`;
   }).join("");
+  const turmas = state.turmas.map((turma) => `<option value="${turma}" ${turma === state.draftTurma ? "selected" : ""}>${turma}</option>`).join("");
   return `<section class="panel">
     <div class="hero-copy">
       <h1>Monte seu rosto e entre no jogo.</h1>
@@ -172,7 +181,7 @@ function profileHtml() {
       <form id="join" class="fields">
         <label>Nome completo<input id="name" name="name" maxlength="48" autocomplete="name" placeholder="Maria Silva" value="${escapeHtml(state.draftName)}" required></label>
         <p class="hint">Nome e sobrenome, só letras. Sem número, apelido, repetição ou palavra ofensiva. Cada nome entra uma vez.</p>
-        <label>Turma<input id="turma" name="turma" maxlength="40" placeholder="8º Ano A" value="${escapeHtml(state.draftTurma)}" required></label>
+        <label>Turma<select id="turma">${turmas}</select></label>
         ${state.error ? `<div class="error">${escapeHtml(state.error)}</div>` : ""}
         <button class="primary" type="submit">Entrar na sala</button>
       </form>
@@ -366,7 +375,8 @@ function rankOf(id) {
 function title(key) {
   return {
     skin: "Rosto", eyes: "Olhos", eyeColor: "Cor dos olhos", hair: "Cabelo",
-    hairColor: "Cor do cabelo", hat: "Chapéu", patch: "Tapa-olho", glasses: "Óculos",
+    hairColor: "Cor do cabelo", hat: "Chapéu", brows: "Sobrancelha", facial: "Barba",
+    ears: "Brinco", patch: "Tapa-olho", glasses: "Óculos",
     mouth: "Boca", frame: "Moldura", extra: "Detalhe",
   }[key];
 }
@@ -375,7 +385,7 @@ function swatchColor(key, index) {
   const sample = Avatar.randomConfig();
   sample[key] = index;
   if (key === "skin") return ["#f8d7b8", "#efc09a", "#d9a06c", "#c4844a", "#8d5a34", "#5c3a24"][index];
-  if (key === "hairColor") return ["#2a211c", "#6a3e2a", "#d25a2b", "#e2b15c", "#3e4658", "#c43b68"][index];
+  if (key === "hairColor") return ["#2a211c", "#6a3e2a", "#d25a2b", "#e2b15c", "#3e4658", "#c43b68", "#f4f1ea", "#3c8f62", "#3a6fd8", "#7a4bb8"][index];
   return ["#4a3428", "#2c6bed", "#1f8a4c", "#7a4a1e", "#6d4ca8", "#222"][index];
 }
 
