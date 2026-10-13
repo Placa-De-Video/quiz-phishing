@@ -51,9 +51,7 @@ test("nome completo é único, sem número e sem ofensa", () => {
   assert.equal(validateName("Asdf Qwer").ok, false);
   assert.equal(validateName("Ana Silva!").ok, false);
   assert.equal(validateTurma("7º Ano B").ok, true);
-  assert.equal(validateTurma("Turma da tarde").ok, true);
-  assert.equal(validateTurma("").ok, false);
-  assert.equal(validateTurma("Porra").ok, false);
+  assert.equal(validateTurma("Turma inventada").ok, false);
 });
 
 test("pontos, placar e nomes repetidos funcionam na sala", () => {

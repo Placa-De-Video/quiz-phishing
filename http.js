@@ -1,4 +1,4 @@
-const { validateName, validateTurma } = require("./names");
+const { validateName, validateTurma, TURMAS } = require("./names");
 const { withRoom } = require("./store");
 
 function pack(room, extra) {
@@ -7,7 +7,7 @@ function pack(room, extra) {
   const you = extra.you
     ? snap.players.find((player) => player.id === extra.you.id) || null
     : null;
-  return { ...snap, ...extra, you };
+  return { ...snap, ...extra, you, turmas: TURMAS };
 }
 
 async function handleState(id) {
@@ -15,7 +15,7 @@ async function handleState(id) {
     if (id) room.markSeen(id);
     const snap = room.snapshot();
     const you = id ? snap.players.find((player) => player.id === id) || null : null;
-    return { ...snap, you, resume: id ? room.resume(id) : null };
+    return { ...snap, turmas: TURMAS, you, resume: id ? room.resume(id) : null };
   });
 }
 
@@ -38,7 +38,7 @@ async function handlePlay(message) {
       if (!created.ok) return { type: "error", error: created.error };
       const snap = room.snapshot();
       const you = snap.players.find((player) => player.id === created.player.id);
-      return { ...snap, type: "joined", you };
+      return { ...snap, type: "joined", you, turmas: TURMAS };
     }
 
     if (!body.id) return { type: "error", error: "Crie seu perfil antes de jogar." };
