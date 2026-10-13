@@ -84,21 +84,18 @@ function validateName(raw) {
   return { ok: true, name: titleCase(original), key: folded };
 }
 
-const TURMAS = [
-  "6º Ano A", "6º Ano B", "6º Ano C",
-  "7º Ano A", "7º Ano B", "7º Ano C",
-  "8º Ano A", "8º Ano B", "8º Ano C",
-  "9º Ano A", "9º Ano B", "9º Ano C",
-  "1ª Série A", "1ª Série B", "1ª Série C",
-  "2ª Série A", "2ª Série B", "2ª Série C",
-  "3ª Série A", "3ª Série B", "3ª Série C",
-  "EJA",
-];
-
 function validateTurma(raw) {
-  const turma = String(raw || "").trim();
-  if (!TURMAS.includes(turma)) return { ok: false, error: "Escolha a turma da lista." };
+  const turma = String(raw || "").trim().replace(/\s+/g, " ");
+  if (!turma) return { ok: false, error: "Escreva sua turma." };
+  if (turma.length > 40) return { ok: false, error: "Esse nome de turma está longo demais." };
+  if (!/^[\p{L}\p{N}\sºª°./-]+$/u.test(turma)) {
+    return { ok: false, error: "Use letras e números na turma, sem símbolos estranhos." };
+  }
+  const folded = fold(turma);
+  if (hasBlockedWord(folded) || NONSENSE.some((word) => folded.includes(word))) {
+    return { ok: false, error: "Essa turma não pode ser usada." };
+  }
   return { ok: true, turma };
 }
 
-module.exports = { validateName, validateTurma, TURMAS, fold };
+module.exports = { validateName, validateTurma, fold };

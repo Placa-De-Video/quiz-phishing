@@ -115,10 +115,6 @@ async function poll() {
     const id = (state.you && state.you.id) || saved || "";
     const response = await fetch(`/api/state${id ? `?id=${encodeURIComponent(id)}` : ""}`);
     const data = await response.json();
-    if (data.turmas && !state.turmas.length && state.phase === "profile") {
-      state.turmas = data.turmas;
-      render();
-    }
     applyBoard(data);
     if (!restored && saved && data.resume && data.you) {
       restored = true;
@@ -163,7 +159,6 @@ function profileHtml() {
     }).join("");
     return `<div><h2>${title(key)}</h2><div class="choices">${choices}</div></div>`;
   }).join("");
-  const turmas = state.turmas.map((turma) => `<option value="${turma}" ${turma === state.draftTurma ? "selected" : ""}>${turma}</option>`).join("");
   return `<section class="panel">
     <div class="hero-copy">
       <h1>Monte seu rosto e entre no jogo.</h1>
@@ -177,7 +172,7 @@ function profileHtml() {
       <form id="join" class="fields">
         <label>Nome completo<input id="name" name="name" maxlength="48" autocomplete="name" placeholder="Maria Silva" value="${escapeHtml(state.draftName)}" required></label>
         <p class="hint">Nome e sobrenome, só letras. Sem número, apelido, repetição ou palavra ofensiva. Cada nome entra uma vez.</p>
-        <label>Turma<select id="turma">${turmas}</select></label>
+        <label>Turma<input id="turma" name="turma" maxlength="40" placeholder="8º Ano A" value="${escapeHtml(state.draftTurma)}" required></label>
         ${state.error ? `<div class="error">${escapeHtml(state.error)}</div>` : ""}
         <button class="primary" type="submit">Entrar na sala</button>
       </form>
